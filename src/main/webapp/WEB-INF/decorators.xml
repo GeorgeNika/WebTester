@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/JSP/templates">
+    <decorator name="admin" page="common.jsp">
+        <pattern>
+            /admin/*
+        </pattern>
+    </decorator>
+    <decorator name="tutor" page="common.jsp">
+        <pattern>
+            /tutor/*
+        </pattern>
+    </decorator>
+    <decorator name="student" page="common.jsp">
+        <pattern>
+            /student/*
+        </pattern>
+    </decorator>
+    <decorator name="common" page="welcome.jsp">
+        <pattern>
+            /*
+        </pattern>
+    </decorator>
+</decorators>
+

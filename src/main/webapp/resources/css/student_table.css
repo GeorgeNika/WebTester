@@ -1,0 +1,115 @@
+.student_table {
+    margin:0px;padding:0px;
+    width:100%;
+    box-shadow: 10px 10px 5px #888888;
+    border:1px solid #000000;
+
+    font-size:14px;
+    font-family:Arial;
+
+    -moz-border-radius-bottomleft:7px;
+    -webkit-border-bottom-left-radius:7px;
+    border-bottom-left-radius:7px;
+
+    -moz-border-radius-bottomright:7px;
+    -webkit-border-bottom-right-radius:7px;
+    border-bottom-right-radius:7px;
+
+    -moz-border-radius-topright:7px;
+    -webkit-border-top-right-radius:7px;
+    border-top-right-radius:7px;
+
+    -moz-border-radius-topleft:7px;
+    -webkit-border-top-left-radius:7px;
+    border-top-left-radius:7px;
+}
+.student_table table{
+     border-collapse: collapse;
+     border-spacing: 0;
+     width:100%;
+     margin:0px;
+    padding:0px;
+}
+.student_table tr:last-child td:last-child {
+      -moz-border-radius-bottomright:7px;
+      -webkit-border-bottom-right-radius:7px;
+      border-bottom-right-radius:7px;
+}
+.student_table table tr:first-child td:first-child {
+    -moz-border-radius-topleft:7px;
+    -webkit-border-top-left-radius:7px;
+    border-top-left-radius:7px;
+}
+.student_table table tr:first-child td:last-child {
+    -moz-border-radius-topright:7px;
+    -webkit-border-top-right-radius:7px;
+    border-top-right-radius:7px;
+}
+.student_table tr:last-child td:first-child{
+     -moz-border-radius-bottomleft:7px;
+     -webkit-border-bottom-left-radius:7px;
+     border-bottom-left-radius:7px;
+}
+.student_table tr:hover td{
+      background-color:#ffffff;
+}
+.student_table td{
+    vertical-align:middle;
+    background-color: #ffffbe;
+    border:1px solid #000000;
+    border-width:0px 1px 1px 0px;
+    text-align:left;
+    padding:7px;
+    font-size:14px;
+    font-family:Arial;
+    font-weight:normal;
+    color:#000000;
+}
+.student_table tr:last-child td{
+     border-width:0px 1px 0px 0px;
+}
+.student_table tr td:last-child{
+      border-width:0px 0px 1px 0px;
+}
+.student_table tr:last-child td:last-child{
+       border-width:0px 0px 0px 0px;
+}
+.student_table tr:first-child td{
+    background:-o-linear-gradient(bottom, #ffee00 5%, #e3b610 100%);
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffee00), color-stop(1, #e3b610) );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffee00", endColorstr="#e3b610");
+
+    background-color:#ffee00;
+    border:0px solid #000000;
+    text-align:center;
+    border-width:0px 0px 1px 1px;
+    font-size:14px;
+    font-family:Arial;
+    font-weight:bold;
+    color:#ffffff;
+}
+.student_table tr:first-child:hover td{
+    background:-o-linear-gradient(bottom, #ffee00 5%, #e3b610 100%);
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffee00), color-stop(1, #e3b610) );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffee00", endColorstr="#e3b610");
+
+    background-color:#ffee00;
+}
+.student_table tr:first-child td:first-child{
+    border-width:0px 0px 1px 0px;
+}
+.student_table tr:first-child td:last-child{
+    border-width:0px 0px 1px 1px;
+}
+
+.student_table_active_account{
+    height: 2.0em;
+    width: 2.0em;
+}
+
+.student_table_active_email{
+    height: 1.0em;
+    width: 1.0em;
+}
+
+

@@ -1,0 +1,27 @@
+<table>
+    <tr>
+        <td>
+            Hello, ${user}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Please confirm your E-Mail.
+            <br/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="${host_context}/${code}"> Confirm email </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <br/>
+            Sincerely, WebTester.
+        </td>
+    </tr>
+</table>
+
+
+

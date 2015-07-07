@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="webtester" transaction-type="RESOURCE_LOCAL">
+
+        <!--
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        -->
+
+        <class>ua.george_nika.webtester.entity.AccountEntity</class>
+        <class>ua.george_nika.webtester.entity.AccountVerificationEntity</class>
+        <class>ua.george_nika.webtester.entity.AnswerEntity</class>
+        <class>ua.george_nika.webtester.entity.QuestionEntity</class>
+        <class>ua.george_nika.webtester.entity.ResultEntity</class>
+        <class>ua.george_nika.webtester.entity.RoleEntity</class>
+        <class>ua.george_nika.webtester.entity.TestEntity</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/webtester"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="webtester"/>
+            <property name="javax.persistence.jdbc.password" value="S0urce1t"/>
+            <property name="hibernate.dialect" 		value="org.hibernate.dialect.PostgreSQL82Dialect" />
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

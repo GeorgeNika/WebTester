@@ -1,0 +1,30 @@
+<table>
+    <tr>
+        <td>
+            Hello, ${user}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Your login - ${login}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Your password - ${password}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+            Sincerely, WebTester.
+        </td>
+    </tr>
+</table>
+
+
