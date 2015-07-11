@@ -143,17 +143,21 @@ abstract public class AbstractDaoJpaImpl<T> implements AbstractDao<T> {
                                         Root root,
                                         SortAndRestrictForEntity sortAndRestrict){
         List<Predicate> predicateList = new ArrayList<Predicate>();
-        Map<String, String> restrict = sortAndRestrict.getLikeRestrictionForEntity();
-        for (String tempField : restrict.keySet()) {
-            Expression<String> literal = criteriaBuilder.upper(criteriaBuilder.literal(restrict.get(tempField)));
-            Predicate tempPredicate = criteriaBuilder.like(criteriaBuilder.upper(root.get(tempField)), literal);
+
+        //add like restrict to predicate
+        Map<String, String> likeRestrict = sortAndRestrict.getLikeRestrictionForEntity();
+        for (String tempField : likeRestrict.keySet()) {
+            Expression<String> tempFindLiteral = criteriaBuilder.literal("%" + likeRestrict.get(tempField) + "%");
+            Expression<String> upperFindLiteral = criteriaBuilder.upper(tempFindLiteral);
+            Expression<String> upperFieldLiteral = criteriaBuilder.upper(root.get(tempField).as(String.class));
+            Predicate tempPredicate = criteriaBuilder.like(upperFieldLiteral, upperFindLiteral);
             predicateList.add(tempPredicate);
         }
 
-        // add dependence to predicate
-        Map<String, Object> dependence = sortAndRestrict.getEqualRestrictionForEntity();
-        for (String tempField : dependence.keySet()) {
-            Expression<Object> literal = criteriaBuilder.literal(dependence.get(tempField));
+        // add equal restrict to predicate
+        Map<String, Object> equalRestrict = sortAndRestrict.getEqualRestrictionForEntity();
+        for (String tempField : equalRestrict.keySet()) {
+            Expression<Object> literal = criteriaBuilder.literal(equalRestrict.get(tempField));
             Predicate tempPredicate = criteriaBuilder.equal(root.get(tempField), literal);
             predicateList.add(tempPredicate);
         }
@@ -177,5 +181,27 @@ abstract public class AbstractDaoJpaImpl<T> implements AbstractDao<T> {
             }
         }
         return orderList;
+    }
+
+    public int getCountRecordsFilteredAndSortedList (SortAndRestrictForEntity sortAndRestrict) {
+        int result;
+        try {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(Integer.class);
+            Root root = criteriaQuery.from(getEntityClass());
+            CriteriaQuery select = criteriaQuery.select(criteriaBuilder.count(root));
+
+            select.where(getFullPredicate(criteriaBuilder, root, sortAndRestrict));
+
+            TypedQuery typedQuery = entityManager.createQuery(select);
+            Long longResult = (Long) typedQuery.getSingleResult();
+            result = longResult.intValue();
+        } catch (RuntimeException ex) {
+            WebTesterLogger.warn(LOGGER_NAME, "can't obtain count records filtered and sorted list " + getEntityClass()
+                    + " sort - " + sortAndRestrict.toString());
+            throw new WorkWithDataBaseRuntimeException("can`t obtain result from database");
+        }
+
+        return result;
     }
 }

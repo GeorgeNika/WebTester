@@ -26,4 +26,6 @@ public interface AbstractDao<T> {
 
     List<T> getFilteredAndSortedList(Integer offset, Integer limit, SortAndRestrictForEntity sortAndRestrict);
 
+    int getCountRecordsFilteredAndSortedList (SortAndRestrictForEntity sortAndRestrict);
+
 }

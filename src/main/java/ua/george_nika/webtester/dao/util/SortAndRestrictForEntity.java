@@ -48,10 +48,6 @@ public class SortAndRestrictForEntity {
         likeRestrictionForEntity.remove(field);
     }
 
-    public void setSort(String field){
-        sortForEntity.put(field, MySortDirection.ASCENDING);
-    }
-
     public void nextSort(String field){
         if (sortForEntity.containsKey(field)) {
             MySortDirection tempDirection = sortForEntity.get(field);
