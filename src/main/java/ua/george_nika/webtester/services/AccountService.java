@@ -7,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import ua.george_nika.webtester.dao.intface.AbstractDao;
 import ua.george_nika.webtester.dao.intface.AccountDao;
 import ua.george_nika.webtester.dao.intface.AccountVerificationDao;
 import ua.george_nika.webtester.dao.intface.RoleDao;
@@ -33,13 +34,17 @@ import java.util.*;
 @Service("accountService")
 @Transactional(readOnly = true)
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class AccountService {
+public class AccountService extends AbstractSortAndRestrictService{
     private static final int ID_ROLE_STUDENT = WebTesterRole.STUDENT.getId();
     private static String LOGGER_NAME = AccountService.class.getSimpleName();
-    private SortAndRestrictForEntity sortAndRestrict = new SortAndRestrictForEntity();
 
     @Autowired
     private AccountDao accountDao;
+
+    @Override
+    AbstractDao getDao() {
+        return accountDao;
+    }
 
     @Autowired
     private AccountVerificationDao accountVerificationDao;
@@ -349,7 +354,7 @@ public class AccountService {
 
     public List<AccountEntity> getPartOfAccount(int offset, int limit) {
         try {
-            List<AccountEntity> resultList = accountDao.getFilteredAndSortedList(offset, limit, sortAndRestrict);
+            List<AccountEntity> resultList = accountDao.getFilteredAndSortedList(offset, limit, limitedSortAndRestrict);
             return resultList;
         } catch (Exception ex) {
             WebTesterLogger.error(LOGGER_NAME, "Can't get accounts offset: " + offset
@@ -358,47 +363,6 @@ public class AccountService {
                     + " - limit: " + limit + " - " + ex.getMessage());
         }
     }
-
-    public void addDependence(String field, Object value) {
-        sortAndRestrict.addEqualRestriction(field, value);
-    }
-
-    public void clearAllDependence() {
-        sortAndRestrict.clearAllEqualRestriction();
-    }
-
-    public void deleteDependence(String field) {
-        sortAndRestrict.deleteEqualRestriction(field);
-    }
-
-    public void addRestriction(String field, String value) {
-        sortAndRestrict.addLikeRestriction(field, value);
-    }
-
-    public void clearAllRestriction() {
-        sortAndRestrict.clearAllLikeRestriction();
-    }
-
-    public void deleteRestricton(String field) {
-        sortAndRestrict.deleteLikeRestriction(field);
-    }
-
-    public void clearAllSort() {
-        sortAndRestrict.clearAllSort();
-    }
-
-    public void setSort(String field) {
-        sortAndRestrict.setSort(field);
-    }
-
-    public void nextSort(String field) {
-        sortAndRestrict.nextSort(field);
-    }
-
-    public void deleteSort(String field) {
-        sortAndRestrict.deleteSort(field);
-    }
-
 
     private void sendRegistrationMessage(AccountEntity accountEntity, String code) {
         try {

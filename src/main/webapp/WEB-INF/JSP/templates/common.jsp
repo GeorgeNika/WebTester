@@ -148,7 +148,7 @@
                             var obj2 = document.getElementById('empty_div');
                             obj1.parentNode.replaceChild(obj2, obj1);
                         }
-                        setTimeout(clearInfo 5000);
+                        setTimeout(clearInfo, 5000);
                     </script>
                         ${requestScope.get(request_info)}
                 </div>

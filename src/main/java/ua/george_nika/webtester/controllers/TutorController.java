@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.george_nika.webtester.entity.*;
 import ua.george_nika.webtester.forms.AnswerForm;
 import ua.george_nika.webtester.forms.QuestionForm;
@@ -35,22 +36,40 @@ public class TutorController {
     @Autowired
     private ResultService resultService;
 
+    @Autowired
+    SortAndRestrictUtil sortAndRestrictUtil;
+
     // *****************
     //   Page section
     // *****************
 
     @RequestMapping("/mainPage")
-    public String mainPage(HttpServletRequest request, HttpSession session, Model model) {
+    public String mainPage(HttpServletRequest request, HttpSession session, Model model,
+                           @RequestParam(value = "sort", required = false) String sort,
+                           @RequestParam(value = "page", required = false) String pageDirection,
+                           @RequestParam(value = "idLike", required = false) String idLike,
+                           @RequestParam(value = "nameLike", required = false) String nameLike) {
         try {
-            //todo need paging
-            testService.clearAllDependence();
+            testService.clearAllEqualRestriction();
             if (((RoleEntity) session.getAttribute(WebTesterConstants.SESSION_ROLE)).getIdRole()
                     == WebTesterRole.TUTOR.getId()) {
-                testService.addDependence("accountByIdTutor", session.getAttribute(WebTesterConstants.SESSION_ACCOUNT));
+                testService.addTestAccountEqualRestriction((AccountEntity) session.getAttribute(
+                        WebTesterConstants.SESSION_ACCOUNT));
             } else {
-                testService.deleteDependence("accountByIdTutor");
+                testService.deleteTestAccountEqualRestriction();
             }
-            model.addAttribute("testList", testService.getPartOfTest(0, 100));
+
+            sortAndRestrictUtil.setService(testService);
+            sortAndRestrictUtil.setSessionPageProperty(WebTesterConstants.SESSION_SHOW_TEST_TUTOR_PAGE);
+            sortAndRestrictUtil.executeSortBlock(sort);
+            int showPage = sortAndRestrictUtil.getShowPage(session, pageDirection);
+            sortAndRestrictUtil.setShowPageToSession(session, showPage);
+            sortAndRestrictUtil.executeLikeBlock(model, idLike, nameLike);
+
+            model.addAttribute("testList", testService.getPartOfTest(
+                    (showPage - 1) * WebTesterConstants.ROW_ON_PAGE, showPage * WebTesterConstants.ROW_ON_PAGE));
+            model.addAttribute("pageNumber", showPage);
+
             request.setAttribute("namePage", "TUTOR   MAIN   PAGE");
             return "/tutor/main";
         } catch (Exception ex) {
@@ -69,13 +88,28 @@ public class TutorController {
     public String editTestPage(HttpServletRequest request,
                                HttpSession session,
                                Model model,
-                               @PathVariable("idTest") int idTest) {
+                               @PathVariable("idTest") int idTest,
+                               @RequestParam(value = "sort", required = false) String sort,
+                               @RequestParam(value = "page", required = false) String pageDirection,
+                               @RequestParam(value = "idLike", required = false) String idLike,
+                               @RequestParam(value = "nameLike", required = false) String nameLike) {
         try {
             AccountEntity accountEntity = (AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT);
             TestEntity testEntity = testService.getTestById(accountEntity, idTest);
             request.setAttribute("editTest", testEntity);
-            //todo paging
-            model.addAttribute("questionList", questionService.getPartOfQuestion(testEntity, 0, 100));
+
+            sortAndRestrictUtil.setService(questionService);
+            sortAndRestrictUtil.setSessionPageProperty(WebTesterConstants.SESSION_SHOW_QUESTION_TUTOR_PAGE);
+            sortAndRestrictUtil.executeSortBlock(sort);
+            int showPage = sortAndRestrictUtil.getShowPage(session, pageDirection);
+            sortAndRestrictUtil.setShowPageToSession(session, showPage);
+            sortAndRestrictUtil.executeLikeBlock(model, idLike, nameLike);
+
+            model.addAttribute("questionList", questionService.getPartOfQuestion(testEntity,
+                    (showPage - 1) * WebTesterConstants.ROW_ON_PAGE, showPage * WebTesterConstants.ROW_ON_PAGE));
+            model.addAttribute("pageNumber", showPage);
+            model.addAttribute("idTest", idTest);
+
             model.addAttribute("editTestForm", new TestForm(testEntity));
             request.setAttribute("namePage", "EDIT   TEST");
             return "tutor/editTest";
@@ -83,7 +117,7 @@ public class TutorController {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't show test id: " + idTest
                     + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't show test id: " + idTest + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
 
@@ -104,7 +138,7 @@ public class TutorController {
                     + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't create new question test id: " + idTest
                     + " - " + ex.getMessage());
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         }
 
     }
@@ -120,9 +154,6 @@ public class TutorController {
             QuestionEntity questionEntity = questionService.getQuestionById(accountEntity, idQuestion);
             request.setAttribute("editTest", questionEntity.getTest());
             request.setAttribute("editQuestion", questionEntity);
-            //todo paging
-            //model.addAttribute("answerList", answerService.getPartOfAnswer(accountEntity, testEntity, 0, 100));
-            //model.addAttribute("answerList", questionEntity.getAnswerList());
             model.addAttribute("editAnswerForm", new AnswerForm(questionEntity.getAnswerList()));
             model.addAttribute("editQuestionForm", new QuestionForm(questionEntity));
             request.setAttribute("namePage", "EDIT   QUESTION");
@@ -131,7 +162,7 @@ public class TutorController {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't show question id: " + idQuestion
                     + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't show question id: " + idQuestion + " - " + ex.getMessage());
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         }
     }
 
@@ -139,20 +170,34 @@ public class TutorController {
     public String viewResultPage(HttpServletRequest request,
                                  HttpSession session,
                                  Model model,
-                                 @PathVariable("idTest") int idTest) {
+                                 @PathVariable("idTest") int idTest,
+                                 @RequestParam(value = "sort", required = false) String sort,
+                                 @RequestParam(value = "page", required = false) String pageDirection,
+                                 @RequestParam(value = "idLike", required = false) String idLike,
+                                 @RequestParam(value = "nameLike", required = false) String nameLike) {
         try {
             AccountEntity accountEntity = (AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT);
             TestEntity testEntity = testService.getTestById(accountEntity, idTest);
 
-            //todo paging
-            model.addAttribute("testResultList", resultService.getPartOfResultByTest(testEntity, 0, 100));
+            sortAndRestrictUtil.setService(resultService);
+            sortAndRestrictUtil.setSessionPageProperty(WebTesterConstants.SESSION_SHOW_RESULT_TUTOR_PAGE);
+            sortAndRestrictUtil.executeSortBlock(sort);
+            int showPage = sortAndRestrictUtil.getShowPage(session, pageDirection);
+            sortAndRestrictUtil.setShowPageToSession(session, showPage);
+            sortAndRestrictUtil.executeLikeBlock(model, idLike, nameLike);
+
+            model.addAttribute("testResultList", resultService.getPartOfResultByTest(testEntity,
+                    (showPage - 1) * WebTesterConstants.ROW_ON_PAGE, showPage * WebTesterConstants.ROW_ON_PAGE));
+            model.addAttribute("pageNumber", showPage);
+            model.addAttribute("idTest", idTest);
+
             request.setAttribute("namePage", "SHOW   RESULT");
             return "tutor/viewResult";
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't show result id: " + idTest
                     + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't show result id: " + idTest + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
     // *****************
@@ -173,7 +218,7 @@ public class TutorController {
 
             testService.createNewTest(accountEntity, testEntity);
             request.setAttribute(WebTesterConstants.REQUEST_INFO, "Test successfully created. Test empty and disable.");
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         } catch (Exception ex) {
             model.addAttribute("createNewTestForm", createNewTestForm);
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't create new test - " + ex.getMessage());
@@ -191,10 +236,10 @@ public class TutorController {
             AccountEntity accountEntity = (AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT);
             testService.setEnableTestById(accountEntity, idTest);
             request.setAttribute(WebTesterConstants.REQUEST_INFO, "Update successful.");
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't update test - " + ex.getMessage());
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         }
     }
 
@@ -207,10 +252,10 @@ public class TutorController {
             AccountEntity accountEntity = (AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT);
             testService.setDisableTestById(accountEntity, idTest);
             request.setAttribute(WebTesterConstants.REQUEST_INFO, "Update successful.");
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't update test - " + ex.getMessage());
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         }
     }
 
@@ -223,10 +268,10 @@ public class TutorController {
             AccountEntity accountEntity = (AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT);
             testService.deleteTestById(accountEntity, idTest);
             request.setAttribute(WebTesterConstants.REQUEST_INFO, "Test deleted.");
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't delete test - " + ex.getMessage());
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         }
     }
 
@@ -242,10 +287,10 @@ public class TutorController {
             editTestForm.updateTest(tempTestEntity);
             testService.updateTest(accountEntity, tempTestEntity);
             request.setAttribute(WebTesterConstants.REQUEST_INFO, "Update successful.");
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't update test - " + ex.getMessage());
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         }
     }
 
@@ -263,7 +308,7 @@ public class TutorController {
 
             questionService.createQuestion(accountEntity, testEntity, questionEntity);
             request.setAttribute(WebTesterConstants.REQUEST_INFO, "Question successfully created.");
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         } catch (Exception ex) {
             model.addAttribute("createNewQuestionForm", createNewQuestionForm);
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't create new question - " + ex.getMessage());
@@ -322,7 +367,7 @@ public class TutorController {
             AccountEntity accountEntity = (AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT);
             questionService.deleteQuestionById(accountEntity, idQuestion);
             request.setAttribute(WebTesterConstants.REQUEST_INFO, "Delete successful.");
-            return editTestPage(request, session, model, idTest);
+            return editTestPage(request, session, model, idTest, null, null, null, null);
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't update question - " + ex.getMessage());
             return editQuestionPage(request, session, model, idTest, idQuestion);

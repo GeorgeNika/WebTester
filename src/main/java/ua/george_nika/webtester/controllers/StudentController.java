@@ -6,19 +6,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.george_nika.webtester.entity.*;
 import ua.george_nika.webtester.errors.UserWrongInputException;
 import ua.george_nika.webtester.forms.StudentAnswerForm;
-import ua.george_nika.webtester.services.AccountService;
-import ua.george_nika.webtester.services.QuestionService;
-import ua.george_nika.webtester.services.ResultService;
-import ua.george_nika.webtester.services.TestService;
+import ua.george_nika.webtester.services.*;
 import ua.george_nika.webtester.util.WebTesterConstants;
 import ua.george_nika.webtester.util.WebTesterLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.Calendar;
 
 /**
  * Created by George on 18.06.2015.
@@ -40,17 +39,35 @@ public class StudentController {
     @Autowired
     ResultService resultService;
 
+    @Autowired
+    SortAndRestrictUtil sortAndRestrictUtil;
+
+
     // *****************
     //   Page section
     // *****************
 
     @RequestMapping("/mainPage")
-    public String mainPage(HttpServletRequest request, HttpSession session, Model model) {
+    public String mainPage(HttpServletRequest request, HttpSession session, Model model,
+                           @RequestParam(value = "sort", required = false) String sort,
+                           @RequestParam(value = "page", required = false) String pageDirection,
+                           @RequestParam(value = "idLike", required = false) String idLike,
+                           @RequestParam(value = "nameLike", required = false) String nameLike) {
         try {
-            //todo need paging
-            testService.clearAllDependence();
-            testService.addDependence("active", true);
-            model.addAttribute("testList", testService.getPartOfTest(0, 100));
+            testService.clearAllEqualRestriction();
+            testService.addTestActiveEqualRestriction(true);
+
+            sortAndRestrictUtil.setService(testService);
+            sortAndRestrictUtil.setSessionPageProperty(WebTesterConstants.SESSION_SHOW_TEST_STUDENT_PAGE);
+            sortAndRestrictUtil.executeSortBlock(sort);
+            int showPage = sortAndRestrictUtil.getShowPage(session, pageDirection);
+            sortAndRestrictUtil.setShowPageToSession(session, showPage);
+            sortAndRestrictUtil.executeLikeBlock(model, idLike, nameLike);
+
+            model.addAttribute("testList", testService.getPartOfTest(
+                    (showPage - 1) * WebTesterConstants.ROW_ON_PAGE, showPage * WebTesterConstants.ROW_ON_PAGE));
+            model.addAttribute("pageNumber", showPage);
+
             request.setAttribute("namePage", "STUDENT   MAIN   PAGE");
             return "/student/main";
         } catch (Exception ex) {
@@ -72,7 +89,7 @@ public class StudentController {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't begin test id: " + idTest
                     + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't begin test id: " + idTest + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
 
@@ -86,13 +103,16 @@ public class StudentController {
             }
             QuestionEntity questionEntity = questionService.getQuestionByIdWithoutCheck(idQuestionList.getFirst());
 
-            model.addAttribute("studentAnswerForm", new StudentAnswerForm(questionEntity.getAnswerList()));
+            List<AnswerEntity> answerList = questionEntity.getAnswerList();
+            Collections.shuffle(answerList);
+            model.addAttribute("studentAnswerForm", new StudentAnswerForm(answerList));
             model.addAttribute("question", questionEntity.getQuestion());
+            session.setAttribute(WebTesterConstants.SESSION_TIME_START_QUESTION, Calendar.getInstance().getTime());
             request.setAttribute("namePage", questionEntity.getTest().getName());
             return "/student/nextQuestion";
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't show next question " + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
 
@@ -105,7 +125,7 @@ public class StudentController {
             return "/student/endTest";
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't show end test " + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
 
@@ -113,24 +133,37 @@ public class StudentController {
     public String viewResultPage(HttpServletRequest request,
                                  HttpSession session,
                                  Model model,
-                                 @PathVariable("idAccount") int idAccount) {
+                                 @PathVariable("idAccount") int idAccount,
+                                 @RequestParam(value = "sort", required = false) String sort,
+                                 @RequestParam(value = "page", required = false) String pageDirection,
+                                 @RequestParam(value = "idLike", required = false) String idLike,
+                                 @RequestParam(value = "nameLike", required = false) String nameLike) {
         try {
             AccountEntity accountEntity = (AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT);
             if (accountEntity.getIdAccount() != idAccount) {
                 throw new UserWrongInputException("Have NO permission");
             }
-            //todo paging
-            model.addAttribute("testResultList", resultService.getPartOfResultByAccount(accountEntity, 0, 100));
-            request.setAttribute("namePage", "SHOW   RESULT");
+
+            sortAndRestrictUtil.setService(resultService);
+            sortAndRestrictUtil.setSessionPageProperty(WebTesterConstants.SESSION_SHOW_RESULT_STUDENT_PAGE);
+            sortAndRestrictUtil.executeSortBlock(sort);
+            int showPage = sortAndRestrictUtil.getShowPage(session, pageDirection);
+            sortAndRestrictUtil.setShowPageToSession(session, showPage);
+            sortAndRestrictUtil.executeLikeBlock(model, idLike, nameLike);
+
+            model.addAttribute("testResultList", resultService.getPartOfResultByAccount(accountEntity,
+                    (showPage - 1) * WebTesterConstants.ROW_ON_PAGE, showPage * WebTesterConstants.ROW_ON_PAGE));
+            model.addAttribute("idAccount", idAccount);
+            model.addAttribute("pageNumber", showPage);
+            request.setAttribute("namePage", "VIEW   RESULT");
             return "student/viewResult";
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't show result id: " + idAccount
                     + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't show result id: " + idAccount + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
-
     // *****************
     //   Action section
     // *****************
@@ -161,7 +194,7 @@ public class StudentController {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't begin test id: " + idTest
                     + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't begin test id: " + idTest + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
 
@@ -172,6 +205,8 @@ public class StudentController {
                                      @ModelAttribute("studentAnswerForm") StudentAnswerForm studentAnswerForm) {
 
         try {
+
+
             //check answer
             LinkedList<Integer> idQuestionList =
                     (LinkedList<Integer>) session.getAttribute(WebTesterConstants.SESSION_ALL_ID_QUESTION_LIST);
@@ -180,6 +215,23 @@ public class StudentController {
             int countGoodAnswers = 0;
             int countBadAnswers = 0;
             List<Integer> answerFromStudent = studentAnswerForm.getStudentAnswerList();
+            if (answerFromStudent == null) {
+                answerFromStudent = new ArrayList<Integer>();
+            }
+            //check Time add 5% + 1sec;
+            Calendar calendar = Calendar.getInstance();
+            Double durationInSec =
+                    (Integer) session.getAttribute(WebTesterConstants.SESSION_DURATION_FOR_QUESTION) / 1000 * 1.05;
+            durationInSec = durationInSec + 1;
+            int timeInterval = durationInSec.intValue();
+            calendar.add(Calendar.SECOND, -timeInterval);
+            Date startQuestionTime =
+                    (Date) session.getAttribute(WebTesterConstants.SESSION_TIME_START_QUESTION);
+            if (startQuestionTime.before(calendar.getTime())) {
+                request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Time for question is out.");
+                answerFromStudent.clear();
+            }
+
             int tempCount;
             for (AnswerEntity tempAnswer : questionEntity.getAnswerList()) {
                 if (answerFromStudent.contains(tempAnswer.getIdAnswer())) {
@@ -211,7 +263,7 @@ public class StudentController {
         } catch (Exception ex) {
             request.setAttribute(WebTesterConstants.REQUEST_ERROR, "Can't continue test " + " - " + ex.getMessage());
             WebTesterLogger.error(LOGGER_NAME, "Can't continue test " + " - " + ex.getMessage());
-            return mainPage(request, session, model);
+            return mainPage(request, session, model, null, null, null, null);
         }
     }
 

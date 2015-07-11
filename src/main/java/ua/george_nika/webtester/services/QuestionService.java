@@ -1,7 +1,8 @@
 package ua.george_nika.webtester.services;
 
+import ua.george_nika.webtester.dao.intface.AbstractDao;
 import ua.george_nika.webtester.dao.intface.QuestionDao;
-import ua.george_nika.webtester.dao.util.SortAndRestrictForEntity;
+import ua.george_nika.webtester.dao.util.LimitedSortAndRestriction;
 import ua.george_nika.webtester.entity.AccountEntity;
 import ua.george_nika.webtester.entity.AnswerEntity;
 import ua.george_nika.webtester.entity.QuestionEntity;
@@ -24,15 +25,19 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class QuestionService {
+public class QuestionService extends AbstractSortAndRestrictService {
     private static String LOGGER_NAME = QuestionService.class.getSimpleName();
-    private SortAndRestrictForEntity sortAndRestrict = new SortAndRestrictForEntity();
 
     @Autowired
     private TestService testService;
 
     @Autowired
     private QuestionDao questionDao;
+
+    @Override
+    AbstractDao getDao() {
+        return questionDao;
+    }
 
     @Transactional(readOnly = false)
     public void createQuestion(AccountEntity account, TestEntity test, QuestionEntity newQuestion) {
@@ -90,14 +95,16 @@ public class QuestionService {
             tempQuestion.setActive(true);
             questionDao.save(tempQuestion);
         } catch (Exception ex) {
-            WebTesterLogger.warn(LOGGER_NAME, "Can't set enable question by id: " + idQuestion + " - " + ex.getMessage());
-            throw new UserWrongInputException("Can't set enable question by id: " + idQuestion + " - " + ex.getMessage());
+            WebTesterLogger.warn(LOGGER_NAME, "Can't set enable question by id: " + idQuestion
+                    + " - " + ex.getMessage());
+            throw new UserWrongInputException("Can't set enable question by id: " + idQuestion
+                    + " - " + ex.getMessage());
         }
     }
 
-    private void checkEnableQuestion(QuestionEntity questionEntity){
+    private void checkEnableQuestion(QuestionEntity questionEntity) {
         Boolean result = false;
-        for (AnswerEntity tempAnswer : questionEntity.getAnswerList()){
+        for (AnswerEntity tempAnswer : questionEntity.getAnswerList()) {
             if (tempAnswer.isActive()) {
                 result = true;
                 break;
@@ -116,23 +123,26 @@ public class QuestionService {
             tempQuestion.setActive(false);
             questionDao.save(tempQuestion);
         } catch (Exception ex) {
-            WebTesterLogger.warn(LOGGER_NAME, "Can't set disable question by id: " + idQuestion + " - " + ex.getMessage());
-            throw new UserWrongInputException("Can't set disable question by id: " + idQuestion + " - " + ex.getMessage());
+            WebTesterLogger.warn(LOGGER_NAME, "Can't set disable question by id: " + idQuestion
+                    + " - " + ex.getMessage());
+            throw new UserWrongInputException("Can't set disable question by id: " + idQuestion
+                    + " - " + ex.getMessage());
         }
     }
-    private void checkDisableOrDeleteQuestion (QuestionEntity questionEntity){
+
+    private void checkDisableOrDeleteQuestion(QuestionEntity questionEntity) {
         Boolean result = false;
         TestEntity testEntity = questionEntity.getTest();
-        for (QuestionEntity tempQuestion : testEntity.getQuestionList()){
+        for (QuestionEntity tempQuestion : testEntity.getQuestionList()) {
             if (tempQuestion.getIdQuestion() == questionEntity.getIdQuestion()) {
                 continue;
             }
-            if (tempQuestion.isActive()){
+            if (tempQuestion.isActive()) {
                 result = true;
                 break;
             }
         }
-        if (result == false){
+        if (result == false) {
             throw new UserWrongInputException("Have NO enabled question");
         }
     }
@@ -164,11 +174,9 @@ public class QuestionService {
 
     public List<QuestionEntity> getPartOfQuestion(TestEntity testEntity, int offset, int limit) {
         try {
-            //            todo paging;
-            sortAndRestrict.addEqualRestriction("test", testEntity);
-            List<QuestionEntity> resultList = questionDao.getFilteredAndSortedList(offset, limit, sortAndRestrict);
-            //List<QuestionEntity> resultList = testEntity.getQuestionList();
-
+            limitedSortAndRestrict.addQuestionTestEqualRestriction(testEntity);
+            List<QuestionEntity> resultList =
+                    questionDao.getFilteredAndSortedList(offset, limit, limitedSortAndRestrict);
             return resultList;
         } catch (Exception ex) {
             WebTesterLogger.error(LOGGER_NAME, "Can't get question offset: " + offset

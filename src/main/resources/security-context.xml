@@ -24,6 +24,7 @@
         <security:intercept-url pattern="/error" access="permitAll"/>
 
         <security:intercept-url pattern="/loginPage" access="permitAll"/>
+        <security:intercept-url pattern="/taskPage" access="permitAll"/>
         <security:intercept-url pattern="/backupPasswordPage" access="permitAll"/>
         <security:intercept-url pattern="/registerNewAccountPage" access="permitAll"/>
         <security:intercept-url pattern="/logoutAction" access="permitAll"/>

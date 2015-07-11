@@ -1,1 +1,0 @@
-Example how include tag

@@ -3,7 +3,6 @@ package ua.george_nika.webtester.controllers;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.User;
-import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.web.WebAttributes;
@@ -126,6 +125,13 @@ public class CommonController {
                     + " - " + ex.getMessage());
             return welcomeAction(request, session, model);
         }
+    }
+
+    @RequestMapping("/taskPage")
+    public String taskPage(HttpServletRequest request,
+                        HttpSession session,
+                        Model model) {
+        return "account/taskPage";
     }
 
     @RequestMapping("/error")
@@ -305,7 +311,7 @@ public class CommonController {
     public String loginFromFacebookAction(HttpServletRequest request,
                                           HttpSession session,
                                           Model model,
-                                          @Nullable @RequestParam("code") String code,
+                                          @RequestParam("code") String code,
                                           @PathVariable("idRole") int idRole) throws IOException {
         try {
             if (code == null) {

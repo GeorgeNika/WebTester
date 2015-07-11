@@ -2,9 +2,7 @@
 <%@ page import="ua.george_nika.webtester.entity.AccountEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!--
 <%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
-<tag:tag></tag:tag>-->
 
 <html>
 <head>
@@ -21,12 +19,13 @@
 <br/>
 
 <div class="student_table">
+    <tag:paging></tag:paging>
     <table>
         <tr>
-            <td>№</td>
-            <td width="20%">Name</td>
+            <td width="5%" onclick="Sort('id')">№</td>
+            <td width="20%" onclick="Sort('name')">Name</td>
             <td width="5%">Duration</td>
-            <td width="40%">Comment</td>
+            <td width="35%">Comment</td>
             <td width="5%">Question</td>
             <td width="30%">Author</td>
         </tr>
@@ -50,5 +49,22 @@
         </c:forEach>
     </table>
 </div>
+<script>
+    function Sort(valueSort) {
+        window.location.href = '${context}/student/mainPage?sort=' + valueSort;
+    }
+    function Page(valuePage) {
+        window.location.href = '${context}/student/mainPage?page=' + valuePage;
+    }
+    function IdLike(valueLike) {
+        window.location.href = '${context}/student/mainPage?idLike=' + valueLike;
+    }
+    function NameLike(valueLike) {
+        window.location.href = '${context}/student/mainPage?nameLike=' + valueLike;
+    }
+    function ClearLike() {
+        window.location.href = '${context}/student/mainPage?idLike=&nameLike=';
+    }
+</script>
 </body>
 </html>

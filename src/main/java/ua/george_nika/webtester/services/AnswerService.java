@@ -6,12 +6,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.george_nika.webtester.dao.intface.AnswerDao;
-import ua.george_nika.webtester.dao.intface.QuestionDao;
 import ua.george_nika.webtester.dao.util.SortAndRestrictForEntity;
 import ua.george_nika.webtester.entity.AccountEntity;
 import ua.george_nika.webtester.entity.AnswerEntity;
 import ua.george_nika.webtester.entity.QuestionEntity;
-import ua.george_nika.webtester.entity.TestEntity;
 import ua.george_nika.webtester.errors.UserWrongInputException;
 import ua.george_nika.webtester.util.WebTesterLogger;
 
@@ -22,7 +20,7 @@ import java.util.Date;
 @Transactional(readOnly = true)
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class AnswerService {
-    private static String LOGGER_NAME = QuestionService.class.getSimpleName();
+    private static String LOGGER_NAME = AnswerService.class.getSimpleName();
     private SortAndRestrictForEntity sortAndRestrict = new SortAndRestrictForEntity();
 
     @Autowired

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <title></title>
@@ -7,11 +8,12 @@
 <body>
 
 <div class="student_table">
+    <tag:paging></tag:paging>
     <table>
         <tr>
-            <td>№</td>
-            <td width="70%">Name</td>
-            <td width="10%">Duration</td>
+            <td width="5%" onclick="Sort('id')">№</td>
+            <td width="65%" onclick="Sort('name')">Name</td>
+            <td width="10%">Data</td>
             <td width="5%">Questions</td>
             <td width="5%">All Right</td>
             <td width="5%">Your right</td>
@@ -36,7 +38,25 @@
 <button class="student_right_button" onclick="window.location.href ='${context}/student/mainPage'">
     Close
 </button>
+<br/>
+<br/>
+<script>
+    function Sort(valueSort) {
+        window.location.href = '${context}/student/viewResultPage/${idAccount}?sort=' + valueSort;
+    }
+    function Page(valuePage) {
+        window.location.href = '${context}/student/viewResultPage/${idAccount}?page=' + valuePage;
+    }
+    function IdLike(valueLike) {
+        window.location.href = '${context}/student/viewResultPage/${idAccount}?idLike=' + valueLike;
+    }
+    function NameLike(valueLike) {
+        window.location.href = '${context}/student/viewResultPage/${idAccount}?nameLike=' + valueLike;
+    }
+    function ClearLike() {
+        window.location.href = '${context}/student/viewResultPage/${idAccount}?idLike=&nameLike=';
+    }
+</script>
 </body>
 </html>
-</body>
-</html>
+

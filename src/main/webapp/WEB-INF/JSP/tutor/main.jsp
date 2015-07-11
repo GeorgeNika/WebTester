@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
+
 <html>
 <head>
     <title></title>
@@ -12,11 +14,12 @@
 <br/>
 <br/>
 <div class="tutor_table">
+    <tag:paging></tag:paging>
     <table>
         <tr>
             <td></td>
-            <td>№</td>
-            <td width="20%">Name</td>
+            <td onclick="Sort('id')">№</td>
+            <td width="20%" onclick="Sort('name')">Name</td>
             <td width="5%">Duration</td>
             <td width="40%">Comment</td>
             <td width="5%">Question</td>
@@ -49,5 +52,22 @@
         </c:forEach>
     </table>
 </div>
+<script>
+    function Sort(valueSort) {
+        window.location.href = '${context}/tutor/mainPage?sort=' + valueSort;
+    }
+    function Page(valuePage) {
+        window.location.href = '${context}/tutor/mainPage?page=' + valuePage;
+    }
+    function IdLike(valueLike) {
+        window.location.href = '${context}/tutor/mainPage?idLike=' + valueLike;
+    }
+    function NameLike(valueLike) {
+        window.location.href = '${context}/tutor/mainPage?nameLike=' + valueLike;
+    }
+    function ClearLike() {
+        window.location.href = '${context}/tutor/mainPage?idLike=&nameLike=';
+    }
+</script>
 </body>
 </html>

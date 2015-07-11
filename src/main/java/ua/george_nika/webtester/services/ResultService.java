@@ -5,8 +5,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.george_nika.webtester.dao.intface.AbstractDao;
 import ua.george_nika.webtester.dao.intface.ResultDao;
-import ua.george_nika.webtester.dao.util.SortAndRestrictForEntity;
+import ua.george_nika.webtester.dao.util.LimitedSortAndRestriction;
 import ua.george_nika.webtester.entity.AccountEntity;
 import ua.george_nika.webtester.entity.ResultEntity;
 import ua.george_nika.webtester.entity.TestEntity;
@@ -20,12 +21,17 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class ResultService {
+public class ResultService extends AbstractSortAndRestrictService{
     private static String LOGGER_NAME = ResultService.class.getSimpleName();
-    private SortAndRestrictForEntity sortAndRestrict = new SortAndRestrictForEntity();
+
 
     @Autowired
     private ResultDao resultDao;
+
+    @Override
+    AbstractDao getDao() {
+        return resultDao;
+    }
 
 
     @Transactional(readOnly = false)
@@ -73,11 +79,9 @@ public class ResultService {
 
     public List<ResultEntity> getPartOfResultByAccount(AccountEntity accountEntity, int offset, int limit) {
         try {
-            //            todo paging;
-            sortAndRestrict.clearAllEqualRestriction();
-            sortAndRestrict.addEqualRestriction("accountByIdAccount", accountEntity);
-            List<ResultEntity> resultList = resultDao.getFilteredAndSortedList(offset, limit, sortAndRestrict);
-
+            limitedSortAndRestrict.clearAllEqualRestriction();
+            limitedSortAndRestrict.addResultAccountEqualRestriction(accountEntity);
+            List<ResultEntity> resultList = resultDao.getFilteredAndSortedList(offset, limit, limitedSortAndRestrict);
             return resultList;
         } catch (Exception ex) {
             WebTesterLogger.error(LOGGER_NAME, "Can't get result offset: " + offset
@@ -89,11 +93,9 @@ public class ResultService {
 
     public List<ResultEntity> getPartOfResultByTest(TestEntity testEntity, int offset, int limit) {
         try {
-            //            todo paging;
-            sortAndRestrict.clearAllEqualRestriction();
-            sortAndRestrict.addEqualRestriction("testByIdTest", testEntity);
-            List<ResultEntity> resultList = resultDao.getFilteredAndSortedList(offset, limit, sortAndRestrict);
-
+            limitedSortAndRestrict.clearAllEqualRestriction();
+            limitedSortAndRestrict.addResultTestEqualRestriction(testEntity);
+            List<ResultEntity> resultList = resultDao.getFilteredAndSortedList(offset, limit, limitedSortAndRestrict);
             return resultList;
         } catch (Exception ex) {
             WebTesterLogger.error(LOGGER_NAME, "Can't get result offset: " + offset

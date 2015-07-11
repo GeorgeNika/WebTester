@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <title></title>
@@ -94,11 +95,12 @@
 <br/>
 
 <div class="tutor_table">
+    <tag:paging></tag:paging>
     <table>
         <tr>
             <td></td>
-            <td>№</td>
-            <td width="75%">Question</td>
+            <td onclick="Sort('id')">№</td>
+            <td width="75%" onclick="Sort('name')">Question</td>
             <td width="5">Answer</td>
             <td width="10%">created</td>
             <td width="10%">updated</td>
@@ -131,5 +133,22 @@
 </button>
 <br/>
 <br/>
+<script>
+    function Sort(valueSort) {
+        window.location.href = '${context}/tutor/editTestPage/${idTest}?sort=' + valueSort;
+    }
+    function Page(valuePage) {
+        window.location.href = '${context}/tutor/editTestPage/${idTest}?page=' + valuePage;
+    }
+    function IdLike(valueLike) {
+        window.location.href = '${context}/tutor/editTestPage/${idTest}?idLike=' + valueLike;
+    }
+    function NameLike(valueLike) {
+        window.location.href = '${context}/tutor/editTestPage/${idTest}?nameLike=' + valueLike;
+    }
+    function ClearLike() {
+        window.location.href = '${context}/tutor/editTestPage/${idTest}?idLike=&nameLike=';
+    }
+</script>
 </body>
 </html>

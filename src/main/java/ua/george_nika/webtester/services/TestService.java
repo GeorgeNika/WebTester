@@ -1,7 +1,8 @@
 package ua.george_nika.webtester.services;
 
+import ua.george_nika.webtester.dao.intface.AbstractDao;
 import ua.george_nika.webtester.dao.intface.TestDao;
-import ua.george_nika.webtester.dao.util.SortAndRestrictForEntity;
+import ua.george_nika.webtester.dao.util.LimitedSortAndRestriction;
 import ua.george_nika.webtester.entity.AccountEntity;
 import ua.george_nika.webtester.entity.QuestionEntity;
 import ua.george_nika.webtester.entity.RoleEntity;
@@ -19,18 +20,19 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by George on 08.06.2015.
- */
 @Service
 @Transactional(readOnly = true)
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class TestService {
+public class TestService extends AbstractSortAndRestrictService{
     private static String LOGGER_NAME = TestService.class.getSimpleName();
-    private SortAndRestrictForEntity sortAndRestrict = new SortAndRestrictForEntity();
 
     @Autowired
     private TestDao testDao;
+
+    @Override
+    AbstractDao getDao() {
+        return testDao;
+    }
 
     @Transactional(readOnly = false)
     public void createNewTest(AccountEntity account, TestEntity newTest) {
@@ -132,10 +134,11 @@ public class TestService {
             throw new UserWrongInputException("Can't set enable test by id: " + idTest + " - " + ex.getMessage());
         }
     }
-    private void checkEnableTest(TestEntity testEntity){
+
+    private void checkEnableTest(TestEntity testEntity) {
         Boolean result = false;
-        for(QuestionEntity tempQuestion : testEntity.getQuestionList()){
-            if (tempQuestion.isActive()){
+        for (QuestionEntity tempQuestion : testEntity.getQuestionList()) {
+            if (tempQuestion.isActive()) {
                 result = true;
                 break;
             }
@@ -181,49 +184,26 @@ public class TestService {
         }
     }
 
-    public void addDependence(String field, Object value) {
-        sortAndRestrict.addEqualRestriction(field, value);
+    public void addTestActiveEqualRestriction( Boolean active) {
+        limitedSortAndRestrict.addTestActiveEqualRestriction(active);
     }
 
-    public void clearAllDependence() {
-        sortAndRestrict.clearAllEqualRestriction();
+    public void addTestAccountEqualRestriction( AccountEntity accountEntity) {
+        limitedSortAndRestrict.addTestAccountEqualRestriction(accountEntity);
     }
 
-    public void deleteDependence(String field) {
-        sortAndRestrict.deleteEqualRestriction(field);
+    public void deleteTestAccountEqualRestriction() {
+        limitedSortAndRestrict.deleteTestAccountEqualRestriction();
     }
 
-    public void addRestriction(String field, String value) {
-        sortAndRestrict.addLikeRestriction(field, value);
+    public void clearAllEqualRestriction() {
+        limitedSortAndRestrict.clearAllEqualRestriction();
     }
 
-    public void clearAllRestriction() {
-        sortAndRestrict.clearAllLikeRestriction();
-    }
-
-    public void deleteRestricton(String field) {
-        sortAndRestrict.deleteLikeRestriction(field);
-    }
-
-    public void clearAllSort() {
-        sortAndRestrict.clearAllSort();
-    }
-
-    public void setSort(String field) {
-        sortAndRestrict.setSort(field);
-    }
-
-    public void nextSort(String field) {
-        sortAndRestrict.nextSort(field);
-    }
-
-    public void deleteSort(String field) {
-        sortAndRestrict.deleteSort(field);
-    }
 
     public List<TestEntity> getPartOfTest(int offset, int limit) {
         try {
-            List<TestEntity> resultList = testDao.getFilteredAndSortedList(offset, limit, sortAndRestrict);
+            List<TestEntity> resultList = testDao.getFilteredAndSortedList(offset, limit, limitedSortAndRestrict);
             return resultList;
         } catch (Exception ex) {
             WebTesterLogger.error(LOGGER_NAME, "Can't get tests offset: " + offset
