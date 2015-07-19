@@ -8,7 +8,6 @@
 <body>
 
 <div class="student_table">
-    <tag:paging></tag:paging>
     <table>
         <tr>
             <td width="5%" onclick="Sort('id')">№</td>
@@ -33,12 +32,13 @@
         </c:forEach>
     </table>
 </div>
+<div class="student_table">
+    <tag:paging></tag:paging>
+</div>
 <br/>
-<br/>
-<button class="student_right_button" onclick="window.location.href ='${context}/student/mainPage'">
+<button class="right_button" onclick="window.location.href ='${context}/student/mainPage'">
     Close
 </button>
-<br/>
 <br/>
 <script>
     function Sort(valueSort) {

@@ -37,7 +37,7 @@ public class TutorController {
     private ResultService resultService;
 
     @Autowired
-    SortAndRestrictUtil sortAndRestrictUtil;
+    SortRestrictUtil sortAndRestrictUtil;
 
     // *****************
     //   Page section

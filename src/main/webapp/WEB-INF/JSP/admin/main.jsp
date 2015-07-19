@@ -6,29 +6,27 @@
     <title></title>
 </head>
 <body>
-<br/>
-<button class="admin_right_button" onclick="window.location.href ='${context}/admin/createNewAccountPage'">
+<button class="right_button" onclick="window.location.href ='${context}/admin/createNewAccountPage'">
     + Create new account
 </button>
 <br/>
 <br/>
 
 <div class="admin_table">
-    <tag:paging></tag:paging>
     <table>
         <tr>
-            <td></td>
-            <td onclick="Sort('id')">№</td>
+            <td width="3%"></td>
+            <td width="5%" onclick="Sort('id')">№</td>
             <td width="10%" onclick="Sort('name')">Login</td>
             <td width="10%">Password</td>
-            <td width="10%">FirstName</td>
-            <td width="10%">MiddleName</td>
-            <td width="10%">LastName</td>
-            <td width="15%">E-mail</td>
-            <td></td>
-            <td width="10%">created</td>
-            <td width="10%">updated</td>
-            <td width="15%">roleSet</td>
+            <td width="9%">FirstName</td>
+            <td width="9%">MiddleName</td>
+            <td width="9%">LastName</td>
+            <td width="12%">E-mail</td>
+            <td width="2%"></td>
+            <td width="9%">created</td>
+            <td width="9%">updated</td>
+            <td width="13%">roleSet</td>
         </tr>
 
         <c:forEach var="user" items="${userList}">
@@ -74,6 +72,9 @@
             </tr>
         </c:forEach>
     </table>
+</div>
+<div class="admin_table">
+    <tag:paging></tag:paging>
 </div>
 <br/>
 <script>

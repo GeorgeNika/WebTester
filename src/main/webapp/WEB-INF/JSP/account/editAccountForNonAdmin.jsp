@@ -60,7 +60,7 @@
 
                     <tr>
                         <td colspan="2" style="text-align:match-parent;">
-                            <input type="submit" class="table_button" value="Edit"/>
+                            <input type="submit" class="simple_button" value="Edit"/>
                         </td>
                     </tr>
                 </table>
@@ -89,7 +89,7 @@
     </tr>
 </table>
 <br/>
-<button class="login_right_button" onclick="window.location.href ='${context}/welcomeAction'">
+<button class="right_button" onclick="window.location.href ='${context}/welcomeAction'">
     Close
 </button>
 <br/>

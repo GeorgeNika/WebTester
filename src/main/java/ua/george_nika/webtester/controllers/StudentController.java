@@ -40,7 +40,7 @@ public class StudentController {
     ResultService resultService;
 
     @Autowired
-    SortAndRestrictUtil sortAndRestrictUtil;
+    SortRestrictUtil sortAndRestrictUtil;
 
 
     // *****************

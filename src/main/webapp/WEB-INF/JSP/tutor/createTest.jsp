@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td><form:label path="name">Name</form:label></td>
-                <td><form:input path="name"/></td>
+                <td><form:input size="50" path="name"/></td>
             </tr>
             <tr>
                 <td><form:label path="comment">Comment</form:label></td>
@@ -30,14 +30,14 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align:match-parent;">
-                    <input type="submit" class="table_button" value="Create new   TEST  "/>
+                    <input type="submit" class="simple_button" value="Create new   TEST  "/>
                 </td>
             </tr>
         </table>
     </div>
 </form:form>
 <br/>
-<button class="tutor_right_button" onclick="window.location.href ='${context}/tutor/mainPage'">
+<button class="right_button" onclick="window.location.href ='${context}/tutor/mainPage'">
     Close without save
 </button>
 </body>

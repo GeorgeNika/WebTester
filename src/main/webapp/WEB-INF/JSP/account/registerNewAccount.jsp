@@ -54,7 +54,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" style="text-align:match-parent;">
-                                <input type="submit" class="logout_button" value="Register"/>
+                                <input type="submit" class="simple_button" value="Register"/>
                             </td>
                         </tr>
                     </form:form>

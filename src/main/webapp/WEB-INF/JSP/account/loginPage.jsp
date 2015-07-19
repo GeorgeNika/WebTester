@@ -13,21 +13,21 @@
             <table>
                 <tr>
                     <h3>
-                        Для входа и ознакомления можно использвоать аккаунт guest с паролем guest.
+                        Для входа и ознакомления можно использвоать аккаунт <i>guest</i>
+                    с паролем <i>guest</i>.
                     </h3>
-                    <br/>
                 </tr>
                 <tr>
                     <h4>При написании программы использовались следующие библиотеки и технологии: </h4>
                     <h4> * JPA (Hibernate)</h4>
-                    <h4> * Spring MVC </h4>
-                    <h4> * Spring Security</h4>
+                    <h4> * Spring core, MVC, Security </h4>
+                    <h4> * CSS, JavaScript</h4>
                     <h4> * Sitemesh</h4>
                     <h4> * Quartz</h4>
+                    <h4> * Ngnix</h4>
                     <br/>
                     <h4>База данных - PostgreSQL</h4>
                     <h4>Исходники программы - https://github.com/GeorgeNika/WebTester</h4>
-
                 </tr>
                 <tr>
                     <h4> <a href='${context}/taskPage'>Требования к системе</a> </h4>
@@ -37,7 +37,6 @@
         <td width="5%">
         </td>
     </tr>
-
 </table>
 
 

@@ -70,7 +70,7 @@
                             ${account_entity.getLastName()}
                         </td>
                         <td class="buttons_column">
-                            <button class="logout_button"
+                            <button class="simple_button"
                                     onclick="window.location.href='${context}/editAccountForNonAdminPage/${account_entity.idAccount}'">
                                 Edit account
                             </button>
@@ -81,7 +81,7 @@
                             You login as ${account_entity.getLogin()}
                         </td>
                         <td class="buttons_column">
-                            <button class="logout_button" onclick="window.location.href ='${context}/logoutAction'">
+                            <button class="simple_button" onclick="window.location.href ='${context}/logoutAction'">
                                 Logout
                             </button>
                         </td>

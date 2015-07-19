@@ -1,27 +1,23 @@
 div.cs-skin-underline {
     width: 100%;
-    color:#ffffff;
-    background:#4c5a69;
-    font-weight:bold;
-    margin-right: 5px;
-    font-family:Arial,sans-serif;
-    font-size: 14px;
-    border-radius:4px;
-    border:solid 0;
-    border-bottom:2px solid #3c4a59;
-    -moz-border-radius:4px;
-    -webkit-border-radius:4px;
+    box-shadow: 5px 5px 2px #888888;
+    border:1px solid #000000;
+    border-radius:7px;
+    background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");
+    border:0px solid #000000;
     text-align:center;
-}
-
-:hover.cs-skin-underline{
-    background:#2c3a49;
-    text-decoration:underline
+    border-width:0px 0px 1px 1px;
+    font-size:14px;
+    font-family:Arial;
+    font-weight:bold;
+    color:#ffffff;
 }
 
 .cs-skin-underline > span::after {
-    font-family: Arial,sans-serif;
-    font-size: 1.4em;
+    font-family: Arial;
+    font-size: 1.3em;
     content: '+';
     right: 0.4em;
     -webkit-transform: translate3d(0,-50%,0) rotate3d(0,0,1,45deg);
@@ -36,7 +32,9 @@ div.cs-skin-underline {
 }
 
 .cs-skin-underline .cs-options {
-    background: #4c5a69;
+    background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");
     opacity: 0;
     -webkit-transition: opacity 0.3s 0.4s, visibility 0s 0.7s;
     transition: opacity 0.3s 0.4s, visibility 0s 0.7s;

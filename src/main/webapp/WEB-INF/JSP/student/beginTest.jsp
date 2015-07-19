@@ -32,12 +32,12 @@
 <br/>
 <br/>
 <br/>
-<button class="student_left_button"
+<button class="left_button"
         onclick="window.location.href ='${context}/student/beginTestAction/${editTest.idTest}'">
     Begin test
 </button>
 
-<button class="student_right_button" onclick="window.location.href ='${context}/student/mainPage'">
+<button class="right_button" onclick="window.location.href ='${context}/student/mainPage'">
     Close
 </button>
 </body>

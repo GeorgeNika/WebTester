@@ -1,23 +1,27 @@
 div.cs-skin-underline {
     width: 100%;
-    box-shadow: 5px 5px 2px #888888;
-    border:1px solid #000000;
-    border-radius:7px;
-    background:-o-linear-gradient(bottom, #ffee00 5%, #e3b610 100%);
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffee00), color-stop(1, #e3b610) );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffee00", endColorstr="#e3b610");
-    border:0px solid #000000;
-    text-align:center;
-    border-width:0px 0px 1px 1px;
-    font-size:14px;
-    font-family:Arial;
-    font-weight:bold;
     color:#ffffff;
+    background:#d87400;
+    font-weight:bold;
+    margin-right: 5px;
+    font-family:Arial,sans-serif;
+    font-size: 14px;
+    border-radius:4px;
+    border:solid 0;
+    border-bottom:2px solid #c86400;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    text-align:center;
+}
+
+:hover.cs-skin-underline{
+    background:#b85400;
+    text-decoration:underline
 }
 
 .cs-skin-underline > span::after {
-    font-family: Arial;
-    font-size: 1.3em;
+    font-family: Arial,sans-serif;
+    font-size: 1.4em;
     content: '+';
     right: 0.4em;
     -webkit-transform: translate3d(0,-50%,0) rotate3d(0,0,1,45deg);
@@ -32,9 +36,7 @@ div.cs-skin-underline {
 }
 
 .cs-skin-underline .cs-options {
-    background:-o-linear-gradient(bottom, #ffee00 5%, #e3b610 100%);
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffee00), color-stop(1, #e3b610) );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffee00", endColorstr="#e3b610");
+    background: #d87400;
     opacity: 0;
     -webkit-transition: opacity 0.3s 0.4s, visibility 0s 0.7s;
     transition: opacity 0.3s 0.4s, visibility 0s 0.7s;

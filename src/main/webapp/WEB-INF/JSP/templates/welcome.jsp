@@ -7,6 +7,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="${context}/resources/css/login_page.css" type="text/css">
+    <link rel="stylesheet" href="${context}/resources/css/login_select_role.css" type="text/css">
     <link rel="stylesheet" href="${context}/resources/css/login_table.css" type="text/css">
     <title></title>
 </head>
@@ -108,6 +109,15 @@
     <br/>
 </div>
 
+<script src="${context}/resources/js/classie.js"></script>
+<script src="${context}/resources/js/selectFx.js"></script>
+<script>
+    (function () {
+        [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
+            new SelectFx(el);
+        });
+    })();
+</script>
 </body>
 </html>
 

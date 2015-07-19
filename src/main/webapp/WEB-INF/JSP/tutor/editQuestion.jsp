@@ -27,19 +27,19 @@
                         </c:choose>
                     </td>
                     <td>
-                        <button class="table_button"
+                        <button class="simple_button"
                                 onclick="window.location.href ='${context}/tutor/enableQuestionAction/${editTest.idTest}/${editQuestion.idQuestion}'">
                             + Enable Question
                         </button>
                         <br/>
                         <br/>
-                        <button class="table_button"
+                        <button class="simple_button"
                                 onclick="window.location.href ='${context}/tutor/disableQuestionAction/${editTest.idTest}/${editQuestion.idQuestion}'">
                             - Disable Question
                         </button>
                         <br/>
                         <br/>
-                        <button class="table_button"
+                        <button class="simple_button"
                                 onclick="window.location.href ='${context}/tutor/deleteQuestionAction/${editTest.idTest}/${editQuestion.idQuestion}'">
                             x Delete Question
                         </button>
@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align:match-parent;">
-                            <input type="submit" class="table_button" value="Edit"/>
+                            <input type="submit" class="simple_button" value="Edit"/>
                         </td>
                     </tr>
                 </table>
@@ -80,7 +80,7 @@
 </table>
 <br/>
 <br/>
-<button class="tutor_right_button"
+<button class="right_button"
         onclick="window.location.href ='${context}/tutor/createNewAnswerAction/${editTest.idTest}/${editQuestion.idQuestion}'">
     + Create new Answer
 </button>
@@ -138,7 +138,7 @@
                                 document.answer_table.submit();
                             }
                         </script>
-                        <button class="table_button"
+                        <button class="simple_button"
                                 onclick="deleteSubmit()">
                             delete
                         </button>
@@ -153,7 +153,7 @@
                     }
                 </script>
                 <td colspan="8" style="text-align:match-parent;">
-                    <input type="button" class="table_button" value="Edit" onclick="editSubmit()"/>
+                    <input type="button" class="simple_button" value="Edit" onclick="editSubmit()"/>
                 </td>
             </tr>
         </form:form>
@@ -161,7 +161,7 @@
 
 </div>
 <br/>
-<button class="tutor_right_button" onclick="window.location.href ='${context}/tutor/editTestPage/${editTest.idTest}'">
+<button class="right_button" onclick="window.location.href ='${context}/tutor/editTestPage/${editTest.idTest}'">
     Close
 </button>
 <br/>

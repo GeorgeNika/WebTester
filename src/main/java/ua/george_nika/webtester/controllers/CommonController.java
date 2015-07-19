@@ -131,7 +131,7 @@ public class CommonController {
     public String taskPage(HttpServletRequest request,
                         HttpSession session,
                         Model model) {
-        return "account/taskPage";
+        return "account/webtesterTaskPage";
     }
 
     @RequestMapping("/error")

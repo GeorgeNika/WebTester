@@ -9,17 +9,15 @@
     <title></title>
 </head>
 <body>
-<br/>
 <c:set var="account_entity"
        value="<%=((AccountEntity) session.getAttribute(WebTesterConstants.SESSION_ACCOUNT))%>"/>
-<button class="student_right_button" onclick="window.location.href ='${context}/student/viewResultPage/${account_entity.idAccount}'">
+<button class="right_button" onclick="window.location.href ='${context}/student/viewResultPage/${account_entity.idAccount}'">
     View previous results
 </button>
 <br/>
 <br/>
 
 <div class="student_table">
-    <tag:paging></tag:paging>
     <table>
         <tr>
             <td width="5%" onclick="Sort('id')">№</td>
@@ -49,6 +47,16 @@
         </c:forEach>
     </table>
 </div>
+<div class="student_table">
+    <tag:paging></tag:paging>
+</div>
+<content tag = "bs">
+    <script>
+    function a(){
+
+    }
+    </script>
+</content>
 <script>
     function Sort(valueSort) {
         window.location.href = '${context}/student/mainPage?sort=' + valueSort;

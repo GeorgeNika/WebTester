@@ -26,19 +26,19 @@
 
             <br/>
             <br/>
-            <button class="table_button"
+            <button class="simple_button"
                     onclick="window.location.href ='${context}/admin/enableAccountAction/${editAccount.idAccount}'">
                 + Enable Account
             </button>
             <br/>
             <br/>
-            <button class="table_button"
+            <button class="simple_button"
                     onclick="window.location.href ='${context}/admin/disableAccountAction/${editAccount.idAccount}'">
                 - Disable Account
             </button>
             <br/>
             <br/>
-            <button class="table_button"
+            <button class="simple_button"
                     onclick="window.location.href ='${context}/admin/deleteAccountAction/${editAccount.idAccount}'">
                 x Delete Account
             </button>
@@ -82,7 +82,7 @@
 
                     <tr>
                         <td colspan="2" style="text-align:match-parent;">
-                            <input type="submit" class="table_button" value="Edit"/>
+                            <input type="submit" class="simple_button" value="Edit"/>
                         </td>
                     </tr>
                 </table>
@@ -136,7 +136,7 @@
     </tr>
 </table>
 <br/>
-<button class="admin_right_button" onclick="window.location.href ='${context}/admin/mainPage'">
+<button class="right_button" onclick="window.location.href ='${context}/admin/mainPage'">
     Close
 </button>
 <br/>

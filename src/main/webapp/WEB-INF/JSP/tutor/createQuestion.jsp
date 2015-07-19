@@ -17,18 +17,18 @@
             </tr>
             <tr>
                 <td><form:label path="question">Question</form:label></td>
-                <td><form:input path="question"/></td>
+                <td><form:input size="50" path="question"/></td>
             </tr>
             <tr>
                 <td colspan="2" style="text-align:match-parent;">
-                    <input type="submit" class="table_button" value="Create new    QUESTION "/>
+                    <input type="submit" class="simple_button" value="Create new    QUESTION "/>
                 </td>
             </tr>
         </table>
     </div>
 </form:form>
 <br/>
-<button class="tutor_right_button" onclick="window.location.href ='${context}/tutor/editTestPage/${editTest.idTest}'">
+<button class="right_button" onclick="window.location.href ='${context}/tutor/editTestPage/${editTest.idTest}'">
     Close without save
 </button>
 </body>

@@ -28,19 +28,19 @@
                         </c:choose>
                     </td>
                     <td>
-                        <button class="table_button"
+                        <button class="simple_button"
                                 onclick="window.location.href ='${context}/tutor/enableTestAction/${editTest.idTest}'">
                             + Enable Test
                         </button>
                         <br/>
                         <br/>
-                        <button class="table_button"
+                        <button class="simple_button"
                                 onclick="window.location.href ='${context}/tutor/disableTestAction/${editTest.idTest}'">
                             - Disable Test
                         </button>
                         <br/>
                         <br/>
-                        <button class="table_button"
+                        <button class="simple_button"
                                 onclick="window.location.href ='${context}/tutor/deleteTestAction/${editTest.idTest}'">
                             x Delete Test
                         </button>
@@ -73,7 +73,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align:match-parent;">
-                            <input type="submit" class="table_button" value="Edit"/>
+                            <input type="submit" class="simple_button" value="Edit"/>
                         </td>
                     </tr>
                 </table>
@@ -82,12 +82,11 @@
     </tr>
 </table>
 <br/>
-<button class="tutor_left_button"
+<button class="left_button"
         onclick="window.location.href ='${context}/tutor/viewResultPage/${editTest.idTest}'">
     Show results of test
 </button>
-<br/>
-<button class="tutor_right_button"
+<button class="right_button"
         onclick="window.location.href ='${context}/tutor/createNewQuestionPage/${editTest.idTest}'">
     + Create new question
 </button>
@@ -95,7 +94,6 @@
 <br/>
 
 <div class="tutor_table">
-    <tag:paging></tag:paging>
     <table>
         <tr>
             <td></td>
@@ -127,8 +125,11 @@
         </c:forEach>
     </table>
 </div>
+<div class="tutor_table">
+    <tag:paging></tag:paging>
+</div>
 <br/>
-<button class="tutor_right_button" onclick="window.location.href ='${context}/tutor/mainPage'">
+<button class="right_button" onclick="window.location.href ='${context}/tutor/mainPage'">
     Close
 </button>
 <br/>

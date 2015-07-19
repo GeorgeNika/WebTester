@@ -9,7 +9,7 @@
 <div class="login_table">
     <table>
         <tr>
-            <td> </td>
+            <td></td>
             <td> Please login</td>
         </tr>
 
@@ -28,7 +28,8 @@
                     <form:select path="idRole">
                         <c:set var="session_all_role_list"
                                value="<%=WebTesterConstants.SESSION_ALL_ROLE_LIST%>"/>
-                        <form:options items="${sessionScope.get(session_all_role_list)}" itemLabel="name" itemValue="idRole"/>
+                        <form:options items="${sessionScope.get(session_all_role_list)}" itemLabel="name"
+                                      itemValue="idRole"/>
                     </form:select>
                 </td>
             </tr>
@@ -40,27 +41,27 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" class="table_button" value="Login"/>
+                    <input type="submit" class="simple_button" value="Login"/>
                 </td>
             </tr>
         </form:form>
         <tr>
             <td colspan="2" style="text-align: match-parent;">
-                <button class="table_button" onclick="window.location.href ='${context}/backupPasswordPage'">
+                <button class="simple_button" onclick="window.location.href ='${context}/backupPasswordPage'">
                     Backup password
                 </button>
             </td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: match-parent;">
-                <button class="table_button" onclick="window.location.href ='${context}/registerNewAccountPage'">
+                <button class="simple_button" onclick="window.location.href ='${context}/registerNewAccountPage'">
                     Register new Account
                 </button>
             </td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: match-parent;">
-                <button onclick="window.location.href='${context}/fbLoginAction'" class="table_button">
+                <button onclick="window.location.href='${context}/fbLoginAction'" class="simple_button">
                     <img src="${context}/resources/images/Facebook-Button.png" class="facebook_button"/>
                     Login with Facebook
                 </button>

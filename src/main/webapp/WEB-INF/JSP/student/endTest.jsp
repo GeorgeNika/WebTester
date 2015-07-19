@@ -30,7 +30,7 @@
 <br/>
 
 
-<button class="student_right_button" onclick="window.location.href ='${context}/student/mainPage'">
+<button class="right_button" onclick="window.location.href ='${context}/student/mainPage'">
   Close
 </button>
 </body>

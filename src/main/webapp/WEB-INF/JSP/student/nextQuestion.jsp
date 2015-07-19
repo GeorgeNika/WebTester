@@ -36,14 +36,14 @@
             <c:forEach items="${studentAnswerForm.studentAnswerMap}" var="answer">
                 <tr>
                     <div align="center" style="text-align: center">
-                        <td><form:checkbox path="studentAnswerList" value="${answer.key}"/></td>
+                        <td style="text-align: center;"><form:checkbox path="studentAnswerList" value="${answer.key}"/></td>
                     </div>
                     <td><c:out value="${answer.value}"/></td>
                 </tr>
             </c:forEach>
             <tr>
                 <td colspan="2" style="text-align:match-parent;">
-                    <input type="submit" class="table_button" value="Answer"/>
+                    <input type="submit" class="simple_button" value="Answer"/>
                 </td>
             </tr>
 
@@ -59,7 +59,7 @@
     <c:set var="duration" value="<%=WebTesterConstants.SESSION_DURATION_FOR_QUESTION%>"/>
     setTimeout(timeOut, ${sessionScope.get(duration)});
 </script>
-<button class="student_right_button"
+<button class="right_button"
         onclick="window.location.href ='${context}/student/nextQuestionAction'">
     Don't know. Next question.
 </button>

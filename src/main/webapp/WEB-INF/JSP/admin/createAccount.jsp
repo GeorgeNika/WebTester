@@ -52,14 +52,14 @@
 
             <tr>
                 <td colspan="2" style="text-align:match-parent;">
-                    <input type="submit" class="table_button" value="Create new account with role Student"/>
+                    <input type="submit" class="simple_button" value="Create new account with role Student"/>
                 </td>
             </tr>
         </table>
     </div>
 </form:form>
 <br/>
-<button class="admin_right_button" onclick="window.location.href ='${context}/admin/mainPage'">
+<button class="right_button" onclick="window.location.href ='${context}/admin/mainPage'">
     Close without save
 </button>
 </body>

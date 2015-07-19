@@ -1,21 +1,21 @@
 div.cs-skin-underline {
     width: 100%;
     color:#ffffff;
-    background:#4c5a69;
+    background:#008b80;
     font-weight:bold;
     margin-right: 5px;
     font-family:Arial,sans-serif;
     font-size: 14px;
     border-radius:4px;
     border:solid 0;
-    border-bottom:2px solid #3c4a59;
+    border-bottom:2px solid #007b70;
     -moz-border-radius:4px;
     -webkit-border-radius:4px;
     text-align:center;
 }
 
 :hover.cs-skin-underline{
-    background:#2c3a49;
+    background:#106b60;
     text-decoration:underline
 }
 
@@ -36,7 +36,7 @@ div.cs-skin-underline {
 }
 
 .cs-skin-underline .cs-options {
-    background: #4c5a69;
+    background: #008b80;
     opacity: 0;
     -webkit-transition: opacity 0.3s 0.4s, visibility 0s 0.7s;
     transition: opacity 0.3s 0.4s, visibility 0s 0.7s;

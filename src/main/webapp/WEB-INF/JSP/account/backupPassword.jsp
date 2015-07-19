@@ -28,7 +28,7 @@
 
                         <tr>
                             <td colspan="2" style="text-align:match-parent;">
-                                <input type="submit" class="table_button" value="Send Email"/>
+                                <input type="submit" class="simple_button" value="Send Email"/>
                             </td>
                         </tr>
                     </table>

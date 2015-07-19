@@ -28,7 +28,7 @@ public class AdminController {
     AccountService accountService;
 
     @Autowired
-    SortAndRestrictUtil sortAndRestrictUtil;
+    SortRestrictUtil sortAndRestrictUtil;
 
     // *****************
     //   Page section

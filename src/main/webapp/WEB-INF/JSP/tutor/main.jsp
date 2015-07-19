@@ -7,14 +7,13 @@
     <title></title>
 </head>
 <body>
-<br/>
-<button class="tutor_right_button" onclick="window.location.href ='${context}/tutor/createNewTestPage'">
+<button class="right_button" onclick="window.location.href ='${context}/tutor/createNewTestPage'">
     + Create new test
 </button>
 <br/>
 <br/>
+
 <div class="tutor_table">
-    <tag:paging></tag:paging>
     <table>
         <tr>
             <td></td>
@@ -51,6 +50,9 @@
             </tr>
         </c:forEach>
     </table>
+</div>
+<div class="tutor_table">
+    <tag:paging></tag:paging>
 </div>
 <script>
     function Sort(valueSort) {
