@@ -3,12 +3,10 @@ package ua.george_nika.webtester.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.george_nika.webtester.entity.AccountEntity;
 import ua.george_nika.webtester.errors.UserWrongInputException;
+import ua.george_nika.webtester.forms.AjaxSendInformation;
 import ua.george_nika.webtester.forms.EditAccountForm;
 import ua.george_nika.webtester.forms.RegisterNewAccountForm;
 import ua.george_nika.webtester.services.AccountService;
@@ -17,6 +15,10 @@ import ua.george_nika.webtester.util.WebTesterLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -54,6 +56,31 @@ public class AdminController {
 
         request.setAttribute("namePage", "ADMIN   MAIN   PAGE");
         return "/admin/main";
+    }
+
+    @RequestMapping("/mainAjaxPage")
+    @ResponseBody
+    public AjaxSendInformation mainAjaxPage(HttpServletRequest request, HttpSession session, Model model,
+                           @RequestParam(value = "sort", required = false) String sort,
+                           @RequestParam(value = "page", required = false) String pageDirection,
+                           @RequestParam(value = "idLike", required = false) String idLike,
+                           @RequestParam(value = "nameLike", required = false) String nameLike) {
+
+        sortAndRestrictUtil.setService(accountService);
+        sortAndRestrictUtil.setSessionPageProperty(WebTesterConstants.SESSION_SHOW_ACCOUNT_ADMIN_PAGE);
+        sortAndRestrictUtil.executeSortBlock(sort);
+        int showPage = sortAndRestrictUtil.getShowPage(session, pageDirection);
+        sortAndRestrictUtil.setShowPageToSession(session, showPage);
+        sortAndRestrictUtil.executeLikeBlock(model, idLike, nameLike);
+
+        AjaxSendInformation ajaxResult = new AjaxSendInformation();
+        ajaxResult.setPage(showPage);
+        ajaxResult.setIdLike(accountService.getIdLikeRestriction());
+        ajaxResult.setNameLike(accountService.getNameLikeRestriction());
+        List<AccountEntity> resultList = accountService.getPartOfAccount(
+                (showPage - 1) * WebTesterConstants.ROW_ON_PAGE, showPage * WebTesterConstants.ROW_ON_PAGE);
+        ajaxResult.setEntityList(resultList);
+        return ajaxResult;
     }
 
     @RequestMapping("/createNewAccountPage")

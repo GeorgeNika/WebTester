@@ -19,14 +19,14 @@
                 </tr>
                 <tr>
                     <h4>При написании программы использовались следующие библиотеки и технологии: </h4>
-                    <h4> * JPA (Hibernate)</h4>
-                    <h4> * Spring core, MVC, Security </h4>
-                    <h4> * CSS, JavaScript</h4>
+                    <h4> * JPA (Hibernate), JPQL, Criteria Api</h4>
+                    <h4> * Spring: Core, MVC, Security </h4>
+                    <h4> * CSS, JavaScript, JQuery, Ajax</h4>
                     <h4> * Sitemesh</h4>
                     <h4> * Quartz</h4>
-                    <h4> * Ngnix</h4>
                     <br/>
                     <h4>База данных - PostgreSQL</h4>
+                    <h4>Веб сервер -  TomCat, Ngnix</h4>
                     <h4>Исходники программы - https://github.com/GeorgeNika/WebTester</h4>
                 </tr>
                 <tr>

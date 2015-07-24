@@ -9,6 +9,7 @@
 <link rel="shortcut icon" href="${context}/favicon.ico" type="image/x-icon">
 <html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"> </script>
     <c:set var="session_role"
            value="<%=((RoleEntity)session.getAttribute(WebTesterConstants.SESSION_ROLE)).getName()%>"/>
     <c:set var="admin_role" value="<%=WebTesterRole.ADMINISTRATOR.getName()%>"/>
